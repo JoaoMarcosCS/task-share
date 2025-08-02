@@ -11,6 +11,7 @@
       "@shared/*": ["src/shared/*"],
       "@infra/*": ["src/infra/*"],
       "@modules/*": ["src/modules/*"]
-    }
+    },
+    "typeRoots": ["./node_modules/@types", "./src/@types/express"]
   }
 }
