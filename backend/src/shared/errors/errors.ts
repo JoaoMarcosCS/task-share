@@ -1,6 +1,6 @@
 import { ZodError } from "zod";
 
-export class AppError extends Error {
+export class AppException extends Error {
   statusCode: number;
   constructor(message: string, statusCode = 400) {
     super(message);
@@ -10,31 +10,31 @@ export class AppError extends Error {
   }
 }
 
-export class NotFoundError extends AppError {
+export class NotFoundException extends AppException {
   constructor(message: string) {
     super(message, 404);
   }
 }
 
-export class ConflictError extends AppError {
+export class ConflictException extends AppException {
   constructor(message: string) {
     super(message, 409);
   }
 }
 
-export class InternalServerError extends AppError {
+export class InternalServerException extends AppException {
   constructor(message: string) {
     super(message, 500);
   }
 }
 
-export class BadRequestError extends AppError {
+export class BadRequestException extends AppException {
   constructor(message: string) {
     super(message, 400);
   }
 }
 
-export class UnauthorizedError extends AppError {
+export class UnauthorizedException extends AppException {
   constructor(message: string) {
     super(message, 401);
   }
