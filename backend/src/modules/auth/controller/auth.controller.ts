@@ -19,8 +19,8 @@ export class AuthController {
   async authenticate(req: Request, res: Response) {
     const { email, password } = validateWithZod(AuthSchema, req.body);
 
-    const token = await this.authService.login(email, password);
+    const accessToken = await this.authService.login(email, password);
 
-    return res.json({ token });
+    return res.json({ accessToken });
   }
 }
