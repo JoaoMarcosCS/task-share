@@ -32,6 +32,7 @@ export class AuthService {
     const payload = {
       userId: user.id,
       email: user.email,
+      name: user.name,
     };
 
     const secret: string = env.JWT_SECRET as string;
