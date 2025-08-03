@@ -23,12 +23,19 @@ export class AuthMiddleware {
       throw new UnauthorizedException(MessageError.UNAUTHORIZED);
     }
 
-    const decoded = verify(token, env.JWT_SECRET) as {
-      userId: string;
-      email: string;
-    };
+    verify(token, env.JWT_SECRET, (err, decoded) => {
+      if (err) {
+        if (err.name === "TokenExpiredError") {
+          throw new UnauthorizedException("Token expirado");
+        }
+        if (err.name === "JsonWebTokenError") {
+          throw new UnauthorizedException("Token inválido");
+        }
+        throw new UnauthorizedException(MessageError.UNAUTHORIZED);
+      }
 
-    console.log("[auth.middleware]", decoded);
-    next();
+      console.log("[auth.middleware]", decoded);
+      next();
+    });
   }
 }
