@@ -17,4 +17,4 @@ const envSchema = z.object({
   DATABASE_PORT: z.string(),
 });
 
-export const env = envSchema.parse(process.env);
+export const env = envSchema.parse(process.env) as z.infer<typeof envSchema>;
