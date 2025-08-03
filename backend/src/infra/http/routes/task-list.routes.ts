@@ -21,5 +21,9 @@ export function TaskListRoutes(): Router {
     controller.deleteSharing.bind(controller)
   );
 
+  router.get("/:listId/tasks", controller.findTasksByList.bind(controller));
+
+  router.post("/:listId/tasks", controller.assignTask.bind(controller));
+
   return router;
 }

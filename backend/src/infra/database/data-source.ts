@@ -3,6 +3,7 @@ import { env } from "../../shared/environment/env";
 import { User } from "../../modules/users/entities/user.entity";
 import { TaskList } from "../../modules/tasks-lists/entities/task-list.entity";
 import { ListShare } from "../../modules/tasks-lists/entities/list-share.entity";
+import { Task } from "../../modules/tasks/entities/task.entity";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -13,7 +14,7 @@ export const AppDataSource = new DataSource({
   database: env.DATABASE_NAME,
   synchronize: false,
   logging: false,
-  entities: [User, TaskList, ListShare],
+  entities: [User, TaskList, ListShare, Task],
   migrations: ["src/infra/database/migrations/*.ts"],
   migrationsTableName: "migrations",
 });

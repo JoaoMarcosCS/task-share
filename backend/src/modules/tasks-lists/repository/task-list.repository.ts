@@ -6,11 +6,14 @@ import { TaskList } from "../entities/task-list.entity";
 import { ITaskListRepository } from "./ITaskListRepository";
 import { ListShare } from "../entities/list-share.entity";
 import { In } from "typeorm";
+import { CreateTaskDTO } from "../../../modules/tasks/dto/create-task.dto";
+import { Task } from "../../../modules/tasks/entities/task.entity";
 
 @injectable()
 export class TaskListRepository implements ITaskListRepository {
   private readonly taskListRepository = AppDataSource.getRepository(TaskList);
   private readonly listShareRepository = AppDataSource.getRepository(ListShare);
+  private readonly taskRepository = AppDataSource.getRepository(Task);
 
   async create(data: CreateTaskListDTO): Promise<boolean> {
     const taskList = this.taskListRepository.create({
@@ -165,5 +168,48 @@ export class TaskListRepository implements ITaskListRepository {
 
     //se não existe usuário que ainda não foi compartilhado
     return [];
+  }
+
+  async findTasksFromList(listId: string): Promise<Task[]> {
+    const tasks = await this.taskRepository.find({
+      where: {
+        list: {
+          id: listId,
+        },
+      },
+      relations: ["list"],
+      select: {
+        completed: true,
+        createdAt: true,
+        id: true,
+        title: true,
+        updatedAt: true,
+        list: {
+          createdAt: true,
+          id: true,
+          updatedAt: true,
+          title: true,
+        },
+      },
+      order: {
+        createdAt: "desc",
+      },
+    });
+
+    console.log("[findTasksFromList]", tasks);
+
+    return tasks;
+  }
+  async assignTask(listId: string, data: CreateTaskDTO): Promise<boolean> {
+    const task = this.taskRepository.create({
+      list: {
+        id: listId,
+      },
+      ...data,
+    });
+
+    const result = await this.taskRepository.save(task);
+
+    return !!result;
   }
 }

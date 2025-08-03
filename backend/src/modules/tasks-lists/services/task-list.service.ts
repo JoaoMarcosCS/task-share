@@ -10,6 +10,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from "@shared/errors/errors";
+import { CreateTaskDTO } from "@modules/tasks/dto/create-task.dto";
 
 @injectable()
 export class TaskListService {
@@ -124,6 +125,38 @@ export class TaskListService {
 
     if (!result) {
       throw new InternalServerException(MessageError.TASK_LIST_UPDATE_ERROR);
+    }
+
+    return true;
+  }
+
+  async findTaskFromList(ownerId: string, listId: string) {
+    const isOwner = await this.taskListRepository.isOwner(ownerId, listId);
+
+    if (!isOwner) {
+      throw new UnauthorizedException(MessageError.TASK_LIST_NOT_OWNER);
+    }
+
+    const result = await this.taskListRepository.findTasksFromList(listId);
+
+    if (!result || result.length === 0) {
+      throw new NotFoundException(MessageError.TASK_NOT_FOUND);
+    }
+
+    return result;
+  }
+
+  async assignTask(ownerId: string, listId: string, data: CreateTaskDTO) {
+    const isOwner = await this.taskListRepository.isOwner(ownerId, listId);
+
+    if (!isOwner) {
+      throw new UnauthorizedException(MessageError.TASK_LIST_NOT_OWNER);
+    }
+
+    const result = await this.taskListRepository.assignTask(listId, data);
+
+    if (!result) {
+      throw new InternalServerException(MessageError.TASK_LIST_CREATE_ERROR);
     }
 
     return true;

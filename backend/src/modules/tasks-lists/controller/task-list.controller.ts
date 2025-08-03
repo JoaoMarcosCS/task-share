@@ -4,6 +4,8 @@ import { TaskListService } from "../services/task-list.service";
 import { validateWithZod } from "@shared/utils/validate-with-zod";
 import { CreateTaskListSchema } from "../dto/create-task-list.dto";
 import { UpdateTaskListSchema } from "../dto/update-task-list.dto";
+import { FindTaskByListSchema } from "@modules/tasks/dto/find-task-by-list.dto";
+import { CreateTaskSchema } from "@modules/tasks/dto/create-task.dto";
 
 @injectable()
 export class TaskListController {
@@ -75,5 +77,34 @@ export class TaskListController {
     );
 
     return res.status(200).json(result);
+  }
+
+  async assignTask(req: Request, res: Response) {
+    const { listId } = req.params;
+    const { ownerId } = req.body;
+
+    const safeData = validateWithZod(CreateTaskSchema, req.body);
+
+    const result = await this.taskListService.assignTask(
+      ownerId,
+      listId,
+      safeData
+    );
+
+    return res.status(201).json(result);
+  }
+
+  async findTasksByList(req: Request, res: Response) {
+    const { listId } = req.params;
+    const { ownerId } = req.body;
+
+    const safeData = validateWithZod(FindTaskByListSchema, { ownerId });
+
+    const tasks = await this.taskListService.findTaskFromList(
+      safeData.ownerId,
+      listId
+    );
+
+    return res.status(200).json(tasks);
   }
 }
