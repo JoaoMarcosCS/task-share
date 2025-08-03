@@ -1,4 +1,6 @@
 export enum MessageError {
+  INCORRECT_PASSWORD = "Senha incorreta",
+  UNAUTHORIZED = "Não autorizado",
   USER_ALREADY_EXISTS = "Usuário já existente com esse email",
   USER_CREATE_ERROR = "Erro ao criar o seu usuário",
   USER_UPDATE_ERROR = "Erro ao atualizar o seu usuário",

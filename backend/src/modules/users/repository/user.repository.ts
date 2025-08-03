@@ -57,6 +57,20 @@ export class UserRepository implements IUserRepository {
     });
   }
 
+  async findOneByEmail(email: string): Promise<User | null> {
+    return await this.userRepository.findOne({
+      where: {
+        email: email,
+      },
+      select: {
+        name: true,
+        id: true,
+        email: true,
+        password: true,
+      },
+    });
+  }
+
   async exists(email: string): Promise<boolean> {
     const user = await this.userRepository.findOne({
       where: {

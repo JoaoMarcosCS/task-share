@@ -6,5 +6,6 @@ export interface IUserRepository {
   update(id: string, data: Partial<CreateUserDTO>): Promise<boolean>;
   findById(id: string): Promise<User | null>;
   findByEmail(email: string): Promise<User[] | null>;
+  findOneByEmail(email: string): Promise<User | null>;
   exists(email: string): Promise<boolean>;
 }
