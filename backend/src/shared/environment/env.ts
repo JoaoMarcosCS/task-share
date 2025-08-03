@@ -1,7 +1,10 @@
 import { z } from "zod";
 import * as dotenv from "dotenv";
+import { join } from "path";
 
-dotenv.config();
+dotenv.config({
+  path: join(process.cwd(), ".env"),
+});
 
 const envSchema = z.object({
   APP_PORT: z.string(),
