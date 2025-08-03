@@ -14,4 +14,6 @@ export enum MessageError {
   TASK_NOT_FOUND = "Nenhuma tarefa criada ainda para essa lista",
   TASK_CREATE_ERROR = "Erro ao criar sua tarefa",
   TASK_NOT_IN_LIST = "Essa tarefa não existe para essa lista",
+  COMMENT_CREATE_ERROR = "Erro ao criar o seu comentário",
+  COMMENTS_NOT_FOUND = "Nenhum comentário criado ainda para essa tarefa",
 }

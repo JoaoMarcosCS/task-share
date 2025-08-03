@@ -1,3 +1,6 @@
+import { CommentRepository } from "@modules/comments/repository/comment.repository";
+import { ICommentRepository } from "@modules/comments/repository/ICommentRepository";
+
 import { ITaskListRepository } from "@modules/tasks-lists/repository/ITaskListRepository";
 import { TaskListRepository } from "@modules/tasks-lists/repository/task-list.repository";
 import { TaskListService } from "@modules/tasks-lists/services/task-list.service";
@@ -23,3 +26,8 @@ container.registerSingleton("TaskListService", TaskListService);
 container.registerSingleton<ITaskRepository>("ITaskRepository", TaskRepository);
 
 container.registerSingleton("TaskService", TaskService);
+
+container.registerSingleton<ICommentRepository>(
+  "ICommentRepository",
+  CommentRepository
+);

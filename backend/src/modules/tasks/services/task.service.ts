@@ -7,12 +7,18 @@ import {
   NotFoundException,
 } from "@shared/errors/errors";
 import { MessageError } from "@shared/errors/message-error.enum";
+import { CreateCommentDTO } from "@modules/comments/dto/create-comment.dto";
+import { ICommentRepository } from "@modules/comments/repository/ICommentRepository";
+import { Comment } from "@modules/comments/entities/comment.entity";
 
 @injectable()
 export class TaskService {
   constructor(
     @inject("ITaskRepository")
-    private readonly taskRepository: ITaskRepository
+    private readonly taskRepository: ITaskRepository,
+
+    @inject("ICommentRepository")
+    private readonly commentRepository: ICommentRepository
   ) {}
 
   async update(taskId: string, data: UpdateTaskDTO): Promise<boolean> {
@@ -43,5 +49,37 @@ export class TaskService {
     }
 
     return true;
+  }
+
+  async createComment(
+    taskId: string,
+    data: CreateCommentDTO
+  ): Promise<boolean> {
+    const taskExists = await this.taskRepository.taskBelongsToList(
+      taskId,
+      data.listId
+    );
+
+    if (!taskExists) {
+      throw new NotFoundException(MessageError.TASK_NOT_FOUND);
+    }
+
+    const result = await this.commentRepository.create(taskId, data);
+
+    if (!result) {
+      throw new InternalServerException(MessageError.COMMENT_CREATE_ERROR);
+    }
+
+    return true;
+  }
+
+  async findCommentsFromTask(taskId: string): Promise<Comment[]> {
+    const comments = await this.commentRepository.findCommentsFromTask(taskId);
+
+    if (!comments || comments.length === 0) {
+      throw new NotFoundException(MessageError.COMMENTS_NOT_FOUND);
+    }
+
+    return comments;
   }
 }

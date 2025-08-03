@@ -3,6 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { TaskService } from "../services/task.service";
 import { validateWithZod } from "@shared/utils/validate-with-zod";
 import { UpdateTaskSchema } from "../dto/update-task.dto";
+import { CreateCommentSchema } from "@modules/comments/dto/create-comment.dto";
 
 @injectable()
 export class TaskController {
@@ -34,5 +35,23 @@ export class TaskController {
     const result = await this.taskService.toggle(id);
 
     return res.status(200).json(result);
+  }
+
+  async createComment(req: Request, res: Response) {
+    const { id } = req.params;
+
+    const safeData = validateWithZod(CreateCommentSchema, req.body);
+
+    const result = await this.taskService.createComment(id, safeData);
+
+    return res.status(201).json(result);
+  }
+
+  async findCommentsFromTask(req: Request, res: Response) {
+    const { id } = req.params;
+
+    const comments = await this.taskService.findCommentsFromTask(id);
+
+    return res.status(200).json(comments);
   }
 }

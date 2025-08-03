@@ -8,7 +8,7 @@ import {
   ManyToOne,
 } from "typeorm";
 
-@Entity("tasks")
+@Entity("task")
 export class Task {
   @PrimaryGeneratedColumn("uuid")
   id: string;

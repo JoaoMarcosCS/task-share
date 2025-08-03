@@ -4,6 +4,7 @@ import { User } from "../../modules/users/entities/user.entity";
 import { TaskList } from "../../modules/tasks-lists/entities/task-list.entity";
 import { ListShare } from "../../modules/tasks-lists/entities/list-share.entity";
 import { Task } from "../../modules/tasks/entities/task.entity";
+import { Comment } from "../../modules/comments/entities/comment.entity";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -14,7 +15,7 @@ export const AppDataSource = new DataSource({
   database: env.DATABASE_NAME,
   synchronize: false,
   logging: false,
-  entities: [User, TaskList, ListShare, Task],
+  entities: [User, TaskList, ListShare, Task, Comment],
   migrations: ["src/infra/database/migrations/*.ts"],
   migrationsTableName: "migrations",
 });

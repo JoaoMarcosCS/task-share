@@ -23,6 +23,16 @@ export function TaskRoutes(): Router {
     taskPermission.validate.bind(taskPermission),
     controller.update.bind(controller)
   );
+  router.post(
+    "/:id/comments",
+    taskPermission.validate.bind(taskPermission),
+    controller.createComment.bind(controller)
+  );
+  router.get(
+    "/:id/comments",
+    taskPermission.validate.bind(taskPermission),
+    controller.findCommentsFromTask.bind(controller)
+  );
 
   return router;
 }
