@@ -34,7 +34,7 @@ export class TaskListService {
     ownerId: string,
     data: UpdateTaskListDTO
   ): Promise<boolean> {
-    const isOwner = await this.taskListRepository.isOwner(ownerId, listId);
+    const isOwner = await this.taskListRepository.hasAccess(ownerId, listId);
 
     if (!isOwner) {
       throw new UnauthorizedException(MessageError.TASK_LIST_NOT_OWNER);
@@ -60,7 +60,7 @@ export class TaskListService {
   }
 
   async deleteTaskList(listId: string, ownerId: string): Promise<boolean> {
-    const isOwner = await this.taskListRepository.isOwner(ownerId, listId);
+    const isOwner = await this.taskListRepository.hasAccess(ownerId, listId);
 
     if (!isOwner) {
       throw new UnauthorizedException(MessageError.TASK_LIST_NOT_OWNER);
@@ -80,7 +80,7 @@ export class TaskListService {
     ownerId: string,
     usersId: string[]
   ): Promise<boolean> {
-    const isOwner = await this.taskListRepository.isOwner(ownerId, listId);
+    const isOwner = await this.taskListRepository.hasAccess(ownerId, listId);
 
     if (!isOwner) {
       throw new UnauthorizedException(MessageError.TASK_LIST_NOT_OWNER);
@@ -115,7 +115,7 @@ export class TaskListService {
     ownerId: string,
     userId: string
   ): Promise<boolean> {
-    const isOwner = await this.taskListRepository.isOwner(ownerId, listId);
+    const isOwner = await this.taskListRepository.hasAccess(ownerId, listId);
 
     if (!isOwner) {
       throw new UnauthorizedException(MessageError.TASK_LIST_NOT_OWNER);
@@ -131,7 +131,12 @@ export class TaskListService {
   }
 
   async findTaskFromList(ownerId: string, listId: string) {
-    const isOwner = await this.taskListRepository.isOwner(ownerId, listId);
+    //verifica se é o dono ou se a lista foi compartilhada
+    const isOwner = await this.taskListRepository.hasAccess(
+      ownerId,
+      listId,
+      true
+    );
 
     if (!isOwner) {
       throw new UnauthorizedException(MessageError.TASK_LIST_NOT_OWNER);
@@ -147,7 +152,7 @@ export class TaskListService {
   }
 
   async assignTask(ownerId: string, listId: string, data: CreateTaskDTO) {
-    const isOwner = await this.taskListRepository.isOwner(ownerId, listId);
+    const isOwner = await this.taskListRepository.hasAccess(ownerId, listId);
 
     if (!isOwner) {
       throw new UnauthorizedException(MessageError.TASK_LIST_NOT_OWNER);

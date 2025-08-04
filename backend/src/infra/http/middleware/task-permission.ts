@@ -26,9 +26,9 @@ export class TaskPermissionMiddleware {
 
     const { ownerId, listId } = safeData;
 
-    const isOwner = await this.taskListRepository.isOwner(ownerId, listId);
+    const hasAccess = await this.taskListRepository.hasAccess(ownerId, listId);
 
-    if (!isOwner) {
+    if (!hasAccess) {
       throw new UnauthorizedException(MessageError.TASK_LIST_NOT_OWNER);
     }
 

@@ -122,18 +122,40 @@ export class TaskListRepository implements ITaskListRepository {
     return result.affected > 0;
   }
 
-  async isOwner(userId: string, taskListId: string): Promise<boolean> {
-    const existOwner = await this.taskListRepository.findOne({
+  async hasAccess(
+    userId: string,
+    listId: string,
+    share?: boolean
+  ): Promise<boolean> {
+    const isOwner = await this.taskListRepository.exists({
       where: {
-        id: taskListId,
+        id: listId,
         owner: {
           id: userId,
         },
       },
+      relations: ["owner"],
     });
 
-    if (!existOwner) return false;
-    return true;
+    if (isOwner) return true;
+
+    if (share) {
+      const isShared = await this.listShareRepository.exists({
+        where: {
+          taskList: {
+            id: listId,
+          },
+          user: {
+            id: userId,
+          },
+        },
+        relations: ["user", "taskList"],
+      });
+
+      return isOwner || isShared;
+    } else {
+      return false;
+    }
   }
 
   async sharingAlreadyExists(
@@ -161,7 +183,6 @@ export class TaskListRepository implements ITaskListRepository {
       (userId) => !existingUserIds.includes(userId)
     );
 
-    //se ainda tem userId que não foi compartilhado
     if (newUsersId.length > 0) {
       return newUsersId;
     }
@@ -200,6 +221,7 @@ export class TaskListRepository implements ITaskListRepository {
 
     return tasks;
   }
+
   async assignTask(listId: string, data: CreateTaskDTO): Promise<boolean> {
     const task = this.taskRepository.create({
       list: {

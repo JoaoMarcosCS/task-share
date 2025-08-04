@@ -11,7 +11,11 @@ export interface ITaskListRepository {
   delete(listId: string): Promise<boolean>;
   share(listId: string, usersId: string[]): Promise<boolean>;
   deleteSharing(listId: string, userId: string): Promise<boolean>;
-  isOwner(userId: string, taskListId: string): Promise<boolean>;
+  hasAccess(
+    userId: string,
+    taskListId: string,
+    ownerOnly?: boolean
+  ): Promise<boolean>;
   sharingAlreadyExists(listId: string, usersId: string[]): Promise<string[]>;
   findTasksFromList(listId: string): Promise<Task[]>;
   assignTask(listId: string, data: CreateTaskDTO): Promise<boolean>;
