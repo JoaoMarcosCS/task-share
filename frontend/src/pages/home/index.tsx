@@ -3,18 +3,18 @@ import { useFindTasksListsQuery } from "./hooks/useFindTasksListsQuery";
 import { useUserStore } from "@/store/user.store";
 import { RenderIf } from "@/components/common/RenderIf";
 import { Button } from "@/components/ui/button";
-import { RenderItems } from "@/components/common/RenderItems";
 import { TaskListCard } from "./components/TaskListCard";
+import { Link } from "react-router-dom";
 
 export function Home() {
-  const { user } = useUserStore((state) => state);
+  const { user } = useUserStore();
   const userId = user?.id ?? "";
 
-  const { data: lists, isLoading, error } = useFindTasksListsQuery(userId);
+  const { data: lists = [], isLoading, error } = useFindTasksListsQuery(userId);
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center h-64">
+      <div className="flex flex-col items-center justify-center h-64 gap-4">
         <p className="text-red-500">Erro ao carregar listas</p>
         <Button variant="outline" onClick={() => window.location.reload()}>
           Tentar novamente
@@ -25,7 +25,7 @@ export function Home() {
 
   return (
     <div className="w-full flex flex-col h-screen">
-      <div>
+      <div className="mb-8">
         <h2 className="font-bold text-2xl tracking-tight sm:text-start text-center">
           Seja bem-vindo(a), {user?.name}
         </h2>
@@ -34,27 +34,29 @@ export function Home() {
         </p>
       </div>
 
-      <div className="mt-6">
-        <div className="flex justify-between items-center">
-          <h2 className=" font-semibold text-2xl sm:text-start text-center">
-            Suas Listas de Tarefas
-          </h2>
-        </div>
-
+      <div className="flex-1">
         <RenderIf shouldRender={isLoading}>
-          <div className="flex gap-4 mt-4">
-            <Loader2 className="animate-spin" />
+          <div className="flex flex-col items-center justify-center h-64 gap-4">
+            <Loader2 className="animate-spin h-8 w-8" />
             <span>Carregando suas listas...</span>
           </div>
         </RenderIf>
 
-        <div className="mt-4">
-          <RenderIf shouldRender={!isLoading}>
-            <RenderItems items={lists} empty={"Nenhuma lista encontrada"}>
-              {(taskList) => <TaskListCard taskList={taskList} />}
-            </RenderItems>
-          </RenderIf>
-        </div>
+        <RenderIf shouldRender={!isLoading}>
+          {lists.length === 0 ? (
+            <Button asChild variant={"ghost"}>
+              <p>
+                <Link to="/lists/new">Criar primeira lista</Link>
+              </p>
+            </Button>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {lists.map((taskList) => (
+                <TaskListCard key={taskList.id} taskList={taskList} />
+              ))}
+            </div>
+          )}
+        </RenderIf>
       </div>
     </div>
   );

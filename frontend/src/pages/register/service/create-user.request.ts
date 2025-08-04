@@ -2,7 +2,7 @@ import { api } from "@/service/api";
 import type { CreateUserDTO } from "../schema/create-user.schema";
 
 const createUserRequest = async (body: CreateUserDTO) => {
-  const response = await api.post<boolean>(`/lists`, body);
+  const response = await api.post<boolean>(`/users`, body);
 
   return response.data;
 };
