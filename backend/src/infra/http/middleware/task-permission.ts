@@ -22,11 +22,26 @@ export class TaskPermissionMiddleware {
   ) {}
 
   async validate(req: Request, res: Response, next: NextFunction) {
-    const safeData = validateWithZod(TaskPermissionSchema, req.body);
+    const allData = {
+      ...req.body,
+      ...req.query,
+    };
+
+    console.log("[task.permission]: Validating", allData);
+
+    const safeData = validateWithZod(TaskPermissionSchema, allData);
+
+    if (!safeData.ownerId || !safeData.listId) {
+      throw new UnauthorizedException(MessageError.UNAUTHORIZED);
+    }
 
     const { ownerId, listId } = safeData;
 
-    const hasAccess = await this.taskListRepository.hasAccess(ownerId, listId);
+    const hasAccess = await this.taskListRepository.hasAccess(
+      ownerId,
+      listId,
+      true
+    );
 
     if (!hasAccess) {
       throw new UnauthorizedException(MessageError.TASK_LIST_NOT_OWNER);
