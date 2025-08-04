@@ -20,24 +20,25 @@ services:
       retries: 5
 
   api:
-    build: ./backend/.
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    
     container_name: task-share-api
+    env_file:
+      - .env
     ports:
       - "3001:3001"
     depends_on:
       - db
-    environment:
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_USERNAME: user
-      DB_PASSWORD: password
-      DB_NAME: taskshare
-      JWT_SECRET: supersecret
     volumes:
       - ./backend:/app
+      - /app/node_modules
       - ./.env:/app/.env
-    command: npm run dev
-
+    command: sh -c "npm install
+     && npx typeorm-ts-node-commonjs migration:run -d src/infra/database/data-source.ts
+     && npm run dev"
+    
   spa:
     build:
       context: ./frontend
