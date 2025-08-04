@@ -19,7 +19,7 @@ export function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className=" flex items-center justify-center bg-gray-50">
+    <div className=" flex items-center justify-center">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow">
         <div className="text-center">
           <h1 className="text-2xl font-bold">Faça Login</h1>
