@@ -64,7 +64,6 @@ backend
 
 ```
 
-## Como rodar?
 
-Primeiro crie um .env na raiz do monorepo `task-share/.env`. Feito isso, basta rodar `docker-compose up --build`
+
 
