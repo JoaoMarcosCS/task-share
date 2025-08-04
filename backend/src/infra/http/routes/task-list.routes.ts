@@ -45,6 +45,12 @@ export function TaskListRoutes(): Router {
   );
 
   router.get(
+    "/:id/share",
+    authMiddleware.verifyToken.bind(authMiddleware),
+    controller.findShare.bind(controller)
+  );
+
+  router.get(
     "/:listId/tasks",
     authMiddleware.verifyToken.bind(authMiddleware),
     controller.findTasksByList.bind(controller)

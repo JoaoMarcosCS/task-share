@@ -11,6 +11,7 @@ import {
   UnauthorizedException,
 } from "@shared/errors/errors";
 import { CreateTaskDTO } from "@modules/tasks/dto/create-task.dto";
+import { ListShare } from "../entities/list-share.entity";
 
 @injectable()
 export class TaskListService {
@@ -47,6 +48,18 @@ export class TaskListService {
     }
 
     return true;
+  }
+
+  async findShares(listId: string, ownerId: string): Promise<ListShare[]> {
+    const isOwner = await this.taskListRepository.hasAccess(ownerId, listId);
+
+    if (!isOwner) {
+      throw new UnauthorizedException(MessageError.TASK_LIST_NOT_OWNER);
+    }
+
+    const result = await this.taskListRepository.findShares(listId, ownerId);
+
+    return result;
   }
 
   async findListsByOwnerId(ownerId: string): Promise<TaskList[]> {
@@ -131,7 +144,6 @@ export class TaskListService {
   }
 
   async findTaskFromList(ownerId: string, listId: string) {
-    //verifica se é o dono ou se a lista foi compartilhada
     const isOwner = await this.taskListRepository.hasAccess(
       ownerId,
       listId,
@@ -143,10 +155,6 @@ export class TaskListService {
     }
 
     const result = await this.taskListRepository.findTasksFromList(listId);
-
-    if (!result || result.length === 0) {
-      throw new NotFoundException(MessageError.TASK_NOT_FOUND);
-    }
 
     return result;
   }

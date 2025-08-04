@@ -25,6 +25,28 @@ export class TaskListRepository implements ITaskListRepository {
     return !!result;
   }
 
+  async findShares(listId: string, ownerId: string): Promise<ListShare[]> {
+    const shares = await this.listShareRepository.find({
+      where: {
+        taskList: { id: listId },
+      },
+      relations: ["taskList", "user"],
+      select: {
+        user: {
+          name: true,
+          email: true,
+          id: true,
+        },
+      },
+    });
+
+    const filtredShares = shares.filter((user) => user.id != ownerId);
+
+    console.log("[findShares]:", filtredShares);
+
+    return filtredShares;
+  }
+
   async findListsByOwnerId(ownerId: string): Promise<TaskList[]> {
     const ownedLists = await this.taskListRepository.find({
       where: {
@@ -88,6 +110,7 @@ export class TaskListRepository implements ITaskListRepository {
 
     return uniqueLists;
   }
+
   async update(id: string, data: UpdateTaskListDTO): Promise<boolean> {
     const { ownerId, ...updateData } = data;
 
@@ -114,11 +137,16 @@ export class TaskListRepository implements ITaskListRepository {
   }
 
   async deleteSharing(listId: string, userId: string): Promise<boolean> {
-    const result = await this.listShareRepository.delete({
-      taskList: { id: listId },
-      user: { id: userId },
+    const share = await this.listShareRepository.findOne({
+      where: {
+        taskList: { id: listId },
+        user: { id: userId },
+      },
     });
 
+    if (!share) return false;
+
+    const result = await this.listShareRepository.delete(share.id);
     return result.affected > 0;
   }
 
@@ -187,18 +215,19 @@ export class TaskListRepository implements ITaskListRepository {
       return newUsersId;
     }
 
-    //se não existe usuário que ainda não foi compartilhado
     return [];
   }
 
-  async findTasksFromList(listId: string): Promise<Task[]> {
+  async findTasksFromList(
+    listId: string
+  ): Promise<{ tasks: Task[]; ownerId: string }> {
     const tasks = await this.taskRepository.find({
       where: {
         list: {
           id: listId,
         },
       },
-      relations: ["list"],
+      relations: ["list", "list.owner"],
       select: {
         completed: true,
         createdAt: true,
@@ -210,6 +239,9 @@ export class TaskListRepository implements ITaskListRepository {
           id: true,
           updatedAt: true,
           title: true,
+          owner: {
+            id: true,
+          },
         },
       },
       order: {
@@ -217,9 +249,30 @@ export class TaskListRepository implements ITaskListRepository {
       },
     });
 
-    console.log("[findTasksFromList]", tasks);
+    //sem listas
+    if (tasks.length === 0) {
+      const list = await this.taskListRepository.findOne({
+        where: { id: listId },
+        relations: ["owner"],
+        select: {
+          id: true,
+          owner: {
+            id: true,
+          },
+        },
+      });
 
-    return tasks;
+      if (!list) {
+        return { tasks: [], ownerId: "" };
+      }
+
+      return { tasks: [], ownerId: list.owner.id };
+    }
+
+    return {
+      tasks,
+      ownerId: tasks[0].list.owner.id,
+    };
   }
 
   async assignTask(listId: string, data: CreateTaskDTO): Promise<boolean> {

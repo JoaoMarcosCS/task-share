@@ -44,6 +44,18 @@ export class TaskListController {
     return res.status(200).json(taskLists);
   }
 
+  async findShare(req: Request, res: Response) {
+    const { id } = req.params;
+    const { ownerId } = req.query;
+    console.log("[TaskListController]:", ownerId);
+    const taskLists = await this.taskListService.findShares(
+      id,
+      ownerId as string
+    );
+
+    return res.status(200).json(taskLists);
+  }
+
   async delete(req: Request, res: Response) {
     const { id } = req.params;
     const { ownerId } = req.body;
@@ -69,6 +81,10 @@ export class TaskListController {
   async deleteSharing(req: Request, res: Response) {
     const { id, userId } = req.params;
     const { ownerId } = req.body;
+
+    console.log("[deleteSharing]:owner:", ownerId);
+    console.log("[deleteSharing]:listid:", id);
+    console.log("[deleteSharing]:userid:", userId);
 
     const result = await this.taskListService.deleteSharing(
       id,
@@ -96,7 +112,8 @@ export class TaskListController {
 
   async findTasksByList(req: Request, res: Response) {
     const { listId } = req.params;
-    const { ownerId } = req.body;
+    console.log("[findTasksByList]:", req.body);
+    const { ownerId } = req.query;
 
     const safeData = validateWithZod(FindTaskByListSchema, { ownerId });
 
