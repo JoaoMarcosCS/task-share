@@ -24,17 +24,6 @@ frontend
 │  │  │  ├─ LayoutPrivate.tsx
 │  │  │  └─ SideBar.tsx
 │  │  └─ ui # componentes do Shadcn
-│  │     ├─ alert-dialog.tsx
-│  │     ├─ avatar.tsx
-│  │     ├─ badge.tsx
-│  │     ├─ button.tsx
-│  │     ├─ dialog.tsx
-│  │     ├─ form.tsx
-│  │     ├─ input.tsx
-│  │     ├─ label.tsx
-│  │     ├─ separator.tsx
-│  │     ├─ sonner.tsx
-│  │     └─ tooltip.tsx
 │  ├─ contexts # não é utilizada, mas criei para poder usar para garantir a autenticação
 │  │  └─ route-guard.tsx
 │  ├─ cookies # configuração dos cookies
@@ -58,7 +47,6 @@ frontend
 │  │  │  └─ service # request utilizados pelos hooks
 │  │  │     ├─ create-share.requet.ts
 │  │  │     └─ find-user-by-email.request.ts
-
 │  ├─ providers
 │  │  ├─ ReactQuery.tsx
 │  │  └─ ThemeProvider.tsx
