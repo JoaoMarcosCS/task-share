@@ -1,69 +1,78 @@
-# React + TypeScript + Vite
+# Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Arquitetura
 
-Currently, two official plugins are available:
+Desenvolvi uma arquitetura que encapsula a lógica de cada página de acordo seu feature. Para requests foi utilizado React Query e Axios. Para o controle de estado foi utilizado Zustand. Por fim, para validação de formulário foi utilizado React Hook Form e Zod. Utilizei o Shadcn para estilização de componentes junto com Tailwind.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```
+frontend
+├─ src
+│  ├─ App.css
+│  ├─ App.tsx
+│  ├─ assets
+│  │  └─ react.svg
+│  ├─ components
+│  │  ├─ common # componentes utilitários e que são usados em várias pastas
+│  │  │  ├─ ActiveLink.tsx
+│  │  │  ├─ LogoutDialog.tsx
+│  │  │  ├─ RenderIf.tsx
+│  │  │  └─ RenderItems.tsx
+│  │  ├─ ErrorBoundary.tsx # componente de fallback de erro
+│  │  ├─ layout # componentes que fazem parte do layout 
+│  │  │  ├─ Footer.tsx
+│  │  │  ├─ Header.tsx
+│  │  │  ├─ LayoutPrivate.tsx
+│  │  │  └─ SideBar.tsx
+│  │  └─ ui # componentes do Shadcn
+│  │     ├─ alert-dialog.tsx
+│  │     ├─ avatar.tsx
+│  │     ├─ badge.tsx
+│  │     ├─ button.tsx
+│  │     ├─ dialog.tsx
+│  │     ├─ form.tsx
+│  │     ├─ input.tsx
+│  │     ├─ label.tsx
+│  │     ├─ separator.tsx
+│  │     ├─ sonner.tsx
+│  │     └─ tooltip.tsx
+│  ├─ contexts # não é utilizada, mas criei para poder usar para garantir a autenticação
+│  │  └─ route-guard.tsx
+│  ├─ cookies # configuração dos cookies
+│  │  └─ cookie-storage.ts
+│  ├─ hooks # hookies que são usado em diversas páginas, assim os componentes do layout
+│  │  └─ useLogoutMutation.ts
+│  ├─ index.css
+│  ├─ main.tsx
+│  ├─ pages
+│  │  ├─ create-share
+│  │  │  ├─ components # componentes exclusivos da página
+│  │  │  │  └─ FindUserByEmailCard.tsx
+│  │  │  ├─ hooks # hooks exclusivo da feature
+│  │  │  │  ├─ useCreateShareFormHandler.ts
+│  │  │  │  ├─ useCreateShareMutation.ts
+│  │  │  │  └─ useFindUserByEmailQuery.ts
+│  │  │  ├─ interface
+│  │  │  │  └─ user.interface.ts
+│  │  │  ├─ schema # schema de validação com react hook form e zod
+│  │  │  │  └─ create-share.schema.ts
+│  │  │  └─ service # request utilizados pelos hooks
+│  │  │     ├─ create-share.requet.ts
+│  │  │     └─ find-user-by-email.request.ts
 
-## Expanding the ESLint configuration
+│  ├─ providers
+│  │  ├─ ReactQuery.tsx
+│  │  └─ ThemeProvider.tsx
+│  ├─ routes # mapeamento das páginas
+│  │  └─ index.tsx
+│  ├─ service # configuração da conexão com a api
+│  │  └─ api.ts
+│  ├─ store # configuração da store do usuário
+│  │  └─ user.store.ts
+│  ├─ utils # funções utilitárias
+│  │  ├─ add-token-to-header.ts
+│  │  ├─ get-api-error-message.ts
+│  │  ├─ remove-token-from-header.ts
+│  │  └─ take-initial-letters.ts
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
