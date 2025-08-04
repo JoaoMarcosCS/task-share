@@ -1,0 +1,130 @@
+{
+	"info": {
+		"_postman_id": "ec295263-91d3-463e-93d3-703074423fc8",
+		"name": "task-list",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "33142725"
+	},
+	"item": [
+		{
+			"name": "Create",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{token}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\":\"tarefa 11\",\r\n    \"ownerId\": \"a136271f-ecc8-4c0b-a164-f29390cdabc3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url}}/lists"
+			},
+			"response": []
+		},
+		{
+			"name": "Find",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{token}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url}}/lists/a136271f-ecc8-4c0b-a164-f29390cdabc3"
+			},
+			"response": []
+		},
+		{
+			"name": "Edit",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ownerId\": \"d51a5b81-2a1a-40d7-b0e5-fef5f5438c58\",\r\n    \"title\": \"teste update 15\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url}}/lists/f1186361-30cf-4262-b17f-5c2b9459d6b8"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ownerId\": \"d51a5b81-2a1a-40d7-b0e5-fef5f5438c58\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url}}/lists/8db4779d-fa73-4cb6-9854-8468ff262427"
+			},
+			"response": []
+		},
+		{
+			"name": "Share",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhMTM2MjcxZi1lY2M4LTRjMGItYTE2NC1mMjkzOTBjZGFiYzMiLCJlbWFpbCI6Im0yQGdtYWlsLmNvbSIsIm5hbWUiOiJKb2EiLCJpYXQiOjE3NTQyNTk4ODAsImV4cCI6MTc1NDI2MzQ4MH0.nsBRaGd3M0KkpGAGw504Jg181nS35p1MbQYyalY9qoA"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ownerId\":\"a136271f-ecc8-4c0b-a164-f29390cdabc3\",\r\n    \"usersId\" : [\r\n        \"6ac9e3c4-c906-47ed-b791-37acab16890a\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url}}/lists/9ea5f7cb-6fba-4219-9b2f-12e7a948c882/share"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Share",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "{{base_url}}/lists/e8df2681-1efa-40d2-9e26-169f8597817d/share"
+			},
+			"response": []
+		}
+	]
+}

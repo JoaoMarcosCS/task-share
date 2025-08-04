@@ -1,0 +1,190 @@
+{
+	"info": {
+		"_postman_id": "25659fc1-0bd3-44bc-8db1-19fcbce61207",
+		"name": "task",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "33142725"
+	},
+	"item": [
+		{
+			"name": "Create",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{token}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ownerId\":\"6ac9e3c4-c906-47ed-b791-37acab16890a\",\r\n    \"title\":\"Tarefa 1\"\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url}}/lists/bb10971a-7ed0-482f-8f15-6987652ca61b/tasks"
+			},
+			"response": []
+		},
+		{
+			"name": "Find By List",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{token}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/lists/bb10971a-7ed0-482f-8f15-6987652ca61b/tasks?ownerId=6ac9e3c4-c906-47ed-b791-37acab16890a",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"lists",
+						"bb10971a-7ed0-482f-8f15-6987652ca61b",
+						"tasks"
+					],
+					"query": [
+						{
+							"key": "ownerId",
+							"value": "6ac9e3c4-c906-47ed-b791-37acab16890a"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update  task",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Tarefa Alterada 31\",\r\n    \"listId\":\"9116b039-9202-4e03-a43d-56efd3750286\",\r\n    \"ownerId\":\"5347ea50-5585-45fb-9d01-a6622e4ffac3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url}}/tasks/b510b0e6-6d96-4260-9c87-d90d52d33bbf"
+			},
+			"response": []
+		},
+		{
+			"name": "Toggle Task",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"listId\":\"9116b039-9202-4e03-a43d-56efd3750286\",\r\n    \"ownerId\":\"5347ea50-5585-45fb-9d01-a6622e4ffac3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url}}/tasks/b510b0e6-6d96-4260-9c87-d90d52d33bbf/toggle"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Task",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"listId\":\"9116b039-9202-4e03-a43d-56efd3750286\",\r\n    \"ownerId\":\"5347ea50-5585-45fb-9d01-a6622e4ffac3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url}}/tasks/b510b0e6-6d96-4260-9c87-d90d52d33bbf"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Comment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\": \"Comentário 2\",\r\n    \"listId\":\"9116b039-9202-4e03-a43d-56efd3750286\",\r\n    \"ownerId\":\"5347ea50-5585-45fb-9d01-a6622e4ffac3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url}}/tasks/93352a09-631d-4554-803d-3b1ccc15662f/comments"
+			},
+			"response": []
+		},
+		{
+			"name": "Find Comments",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\": \"Comentário 1\",\r\n    \"listId\":\"9116b039-9202-4e03-a43d-56efd3750286\",\r\n    \"ownerId\":\"5347ea50-5585-45fb-9d01-a6622e4ffac3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/tasks/93352a09-631d-4554-803d-3b1ccc15662f/comments?listId=9116b039-9202-4e03-a43d-56efd3750286&ownerId=5347ea50-5585-45fb-9d01-a6622e4ffac3",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"tasks",
+						"93352a09-631d-4554-803d-3b1ccc15662f",
+						"comments"
+					],
+					"query": [
+						{
+							"key": "listId",
+							"value": "9116b039-9202-4e03-a43d-56efd3750286"
+						},
+						{
+							"key": "ownerId",
+							"value": "5347ea50-5585-45fb-9d01-a6622e4ffac3"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

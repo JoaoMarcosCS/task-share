@@ -1,0 +1,28 @@
+{
+	"info": {
+		"_postman_id": "541778a4-3f6e-4bf3-8ed6-3f9b5527096a",
+		"name": "auth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "33142725"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"m1@gmail.com\",\r\n    \"password\":\"Admin12\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url}}/auth/login"
+			},
+			"response": []
+		}
+	]
+}
