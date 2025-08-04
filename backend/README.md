@@ -2,7 +2,7 @@
 
 ## Modelagem
 
-foto da modelagem
+![Diagrama de Modelagem do Banco de Dados](./public/Task%20Share%20Modelagem.svg)
 
 ## Arquitetura
 
@@ -67,3 +67,4 @@ backend
 ## Como rodar?
 
 Primeiro crie um .env na raiz do monorepo `task-share/.env`. Feito isso, basta rodar `docker-compose up --build`
+
