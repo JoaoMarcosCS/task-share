@@ -65,10 +65,6 @@ export class TaskListService {
   async findListsByOwnerId(ownerId: string): Promise<TaskList[]> {
     const result = await this.taskListRepository.findListsByOwnerId(ownerId);
 
-    if (!result || result.length === 0) {
-      throw new NotFoundException(MessageError.TASK_LIST_NOT_FOUND);
-    }
-
     return result;
   }
 
